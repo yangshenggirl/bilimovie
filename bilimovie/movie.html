@@ -1,0 +1,154 @@
+<!DOCTYPE html> 
+<html>
+    <head>    
+        <meta charset="utf-8" />    
+        <title>
+            bilibili新番排行数据展示
+        </title>   
+        <!-- 引入 echarts.js -->    
+    <script src="echarts.min.js"></script>
+    <script src = "jquery-3.3.1.min.js"></script>
+    </head>
+    <style type="text/css">
+    .main{text-align:center}
+        </style>
+    <body class = "bstyle" style = "background:'bilibili.jpg'"> 
+        <div id="main" style="width: 100%;height: 500px">
+        </div>
+        <script type = "text/javascript">
+
+        var myChart = echarts.init(document.getElementById('main'));
+
+        var bname = [];
+        function getName(){
+            $.get("movie_20180927.json",function(data){
+                $(data).each(function(i){
+                    var Name = data[i].name.toString();                
+                    bname.push(Name);
+                });  
+            });
+            return bname;
+        }
+
+        
+        var bscore = [];
+        function getScore(){
+            $.get("movie_20180927.json",function(data){
+                $(data).each(function(i){
+                    var Score = data[i].score.toString();                   
+                    bscore.push(Score);
+                });  
+            });
+            return bscore;
+        }
+
+            var option = {
+                title: {
+                x: 'center',
+                text: '哔哩哔哩 (゜-゜)つロ 干杯~-bilibili',
+                subtext: '新番排行榜 综合得分',
+                //link: 'http://echarts.baidu.com/doc/example.html'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataView: {show: true, readOnly: false},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            calculable: true,
+            grid: {
+                borderWidth: 0,
+                y: 80,
+                y2: 60
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    show: false,
+                    data:['OVERLORD Ⅲ','工作细胞','我的英雄学院 第三季','Angels of Death','碧蓝之海','邪神与厨二病少女','轻羽飞扬！','博人传 火影忍者新时代','刃牙','天狼 Sirius the Jaeger','小林家的龙女仆','少女☆歌剧 Revue Starlight','OVERLORDⅡ','OVERLORD','OVERLORD Ⅲ SP','异界少女召唤术','女神异闻录5 动画版','精灵宝可梦 日月','欢迎来到实力至上主义的教室','后街女孩','百炼霸王与圣约女武神','徒然喜欢你','埃罗芒阿老师','千绪的上学路','月色真美','春原庄的管理人小姐','卫宫家今天的饭','付丧神出租中','OVERLORD OAD','RErideD-穿越时空的德理达','One Room 第二季','笨女孩','Fate/Apocrypha','在下坂本，有何贵干？','ISLAND ','昴宿七星','暗芝居 第六季','我的英雄学院 OAD','高达创形者','GAMERS电玩咖！','Free!-Dive to the Future-','中间管理录利根川','骑士&魔法','甲铁城的卡巴内瑞','One Room','四月是你的谎言','干物妹！小埋R','Re：从零开始的异世界生活','Re:CREATORS','干物妹！小埋']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    show: false
+                }
+            ],
+            series: [
+                {
+                    name: '新番排行 综合得分统计',
+                    type: 'bar',
+                    itemStyle: {
+                        normal: {
+                            color: function(params) {
+                                // build a color map as your need.
+                                var colorList = ['#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',
+                                '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
+                                '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0','#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',
+                                '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
+                                '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0','#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',
+                                '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
+                                '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0','#C1232B','#B5C334','#FCCE10'
+                                ];
+                                return colorList[params.dataIndex]
+                            },
+                            label: {
+                                show: true,
+                                position: 'top',
+                                formatter: '{b}\n{c}'
+                            }
+                        }
+                    },
+                    data:[3336398,1517904,886849,660539,625297,301986,297752,252799,251861,251449,236828,232629,189286,167177,154266,138217,137883,136487,127510,118475,112255,112082,95858,89961,84526,80521,78954,74067,71529,70107,61506,60981,56718,47732,46998,46387,43600,42438,38196,37728,37211,36714,36712,36581,36365,32641,32421,32314,30829,2865],
+                    markPoint: {
+                        tooltip: {
+                            trigger: 'item',
+                            backgroundColor: 'rgba(0,0,0,0)',
+                            formatter: function(params){
+                                return '<img src="' 
+                                        + params.data.symbol.replace('image://', '')
+                                        + '"/>';
+                            }
+                        },
+                        data: [
+                            {xAxis:0, y: 350, name:'Line', symbolSize:20, symbol: 'image://../asset/ico/折线图.png'},
+                            {xAxis:1, y: 350, name:'Bar', symbolSize:20, symbol: 'image://../asset/ico/柱状图.png'},
+                            {xAxis:2, y: 350, name:'Scatter', symbolSize:20, symbol: 'image://../asset/ico/散点图.png'},
+                            {xAxis:3, y: 350, name:'K', symbolSize:20, symbol: 'image://../asset/ico/K线图.png'},
+                            {xAxis:4, y: 350, name:'Pie', symbolSize:20, symbol: 'image://../asset/ico/饼状图.png'},
+                            {xAxis:5, y: 350, name:'Radar', symbolSize:20, symbol: 'image://../asset/ico/雷达图.png'},
+                            {xAxis:6, y: 350, name:'Chord', symbolSize:20, symbol: 'image://../asset/ico/和弦图.png'},
+                            {xAxis:7, y: 350, name:'Force', symbolSize:20, symbol: 'image://../asset/ico/力导向图.png'},
+                            {xAxis:8, y: 350, name:'Map', symbolSize:20, symbol: 'image://../asset/ico/地图.png'},
+                            {xAxis:9, y: 350, name:'Gauge', symbolSize:20, symbol: 'image://../asset/ico/仪表盘.png'},
+                            {xAxis:10, y: 350, name:'Funnel', symbolSize:20, symbol: 'image://../asset/ico/漏斗图.png'},
+                        ]
+                    }
+                }
+            ] 
+        };
+
+        
+
+        //     // 填入数据
+        //     myChart.setOption({
+        //         xAxis: {
+        //             data: data.bname
+        //         },
+        //         series: [{
+        //             // 根据名字对应到相应的系列
+        //             name: '新番排行 综合得分统计',
+        //             data: data.bscore
+        //         }]
+        //     });
+        
+    myChart.setOption(option);
+    
+        </script>
+    </body>
+    </html>
